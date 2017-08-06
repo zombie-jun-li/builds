@@ -1,0 +1,29 @@
+- name: add group tomcat
+  group: name=tomcat
+
+- name: add tomcat user
+  user: name=tomcat group=tomcat home=/usr/share/tomcat createhome=no
+  become: true
+  become_method: sudo
+
+- name: download tomcat
+  get_url: url=http://apache.fayea.com/tomcat/tomcat-9/v9.0.0.M22/bin/apache-tomcat-9.0.0.M22.tar.gz dest=/opt/apache-tomcat-9.0.0.tar.gz
+
+- name: extract tomcat archive
+  unarchive: src=/opt/apache-tomcat-9.0.0.tar.gz dest=/opt/ copy=no
+
+- name: symlink install directory
+  file: src=/opt/apache-tomcat-9.0.0.M22 path=/usr/local/tomcat state=link
+
+- name: change ownership of tomcat installation
+  file: path=/usr/local/tomcat/ owner=tomcat group=tomcat state=directory recurse=yes
+
+- name: configure tomcat server
+  template: src=server.xml dest=/usr/local/tomcat/conf/
+
+- name: configure tomcat users
+  template: src=tomcat-users.xml dest=/usr/local/tomcat/conf/
+
+- name: install tomcat init script
+  copy: src=tomcat-initscript.sh dest=/etc/init.d/tomcat mode=0755
+
