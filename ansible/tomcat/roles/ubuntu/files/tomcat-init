@@ -75,6 +75,7 @@ stop() {
       echo -n -e "\n\e[00;31mkilling processes which didn't stop after $SHUTDOWN_WAIT seconds\e[00m"
       kill -9 $pid
     fi
+    echo "Tomcat has stopped"
   else
     echo -e "\e[00;31mTomcat is not running\e[00m"
   fi
