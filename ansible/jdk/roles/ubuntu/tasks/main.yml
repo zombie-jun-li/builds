@@ -1,2 +1,2 @@
-- name: install openjdk-9-jdk
-  apt: name=openjdk-9-jdk
+- name: install openjdk-8-jre-headless
+  apt: name=openjdk-8-jre-headless

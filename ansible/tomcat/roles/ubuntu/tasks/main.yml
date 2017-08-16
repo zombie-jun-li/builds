@@ -25,5 +25,5 @@
   template: src=tomcat-users.xml dest=/usr/local/tomcat/conf/
 
 - name: install tomcat init script
-  copy: src=tomcat-initscript.sh dest=/etc/init.d/tomcat mode=0755
+  copy: src=tomcat-init dest=/etc/init.d/tomcat mode=0755
 
