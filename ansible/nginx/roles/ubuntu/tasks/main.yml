@@ -1,0 +1,45 @@
+- name: Install nginx
+  apt: 
+    name: nginx
+    state: present
+    update_cache: yes
+
+- name: make nginx log directory
+  file:
+    path: "{{ nginx_log_dir }}"
+    state: directory
+    owner: li
+
+- name: make app log directory
+  file:
+    path: "{{ app_log_dir }}"
+    state: directory
+    owner: li
+
+- name: make app directory
+  file:
+    path: "{{ app_dir }}"
+    state: directory
+    owner: li
+
+- name: stop nginx
+  command: nginx -s stop
+
+- name: Copy nginx configuration
+  template:
+    src: default.conf
+    dest: /etc/nginx/nginx.conf
+
+- name: Copy robots.txt
+  copy: 
+    src: robots.txt
+    dest: "{{ app_dir }}/robots.txt"
+
+- name: start nginx
+  command: nginx
+
+- name: Check running status
+  uri:
+    url: http://localhost:80/robots.txt
+    method: GET
+    status_code: 200
